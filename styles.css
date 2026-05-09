@@ -1,0 +1,343 @@
+/* ─── Base Styles ────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:           #0f0f18;
+  --surface:      #18182a;
+  --surface-blur: rgba(20, 20, 36, 0.80);
+  --border:       rgba(255, 255, 255, 0.07);
+  --primary:      #6c63ff;
+  --primary-h:    #7c74ff;
+  --accent:       #38bdf8;
+  --accent-h:     #56c8fc;
+  --text:         #e2e2f0;
+  --text-muted:   #6a6a96;
+  --danger:       #ef4444;
+  --ghost:        #22223a;
+  --ghost-h:      #2c2c46;
+  --radius:       14px;
+  --mono:         'Courier New', Courier, monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem 4rem;
+}
+
+/* ─── Tabs ───────────────────────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--surface);
+  padding: 0.35rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-bottom: 2.5rem;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.55rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn:hover {
+  background: var(--ghost-h);
+  color: var(--text);
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.tab-btn.active:hover {
+  background: var(--primary-h);
+}
+
+/* ─── Container ──────────────────────────────────────────────────── */
+
+.container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.tab-content        { display: none; }
+.tab-content.active { display: block; }
+
+.hidden { display: none !important; }
+
+.mode-title {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+/* ─── Stopwatch Display ──────────────────────────────────────────── */
+
+.display {
+  text-align: center;
+  padding: 1rem 0 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Wrapper inline para alinear ms abajo-derecha del texto principal */
+.time-wrapper {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.time-main {
+  font-family: var(--mono);
+  font-size: clamp(3.5rem, 14vw, 6rem);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.time-ms {
+  font-family: var(--mono);
+  font-size: clamp(1.2rem, 4.5vw, 2rem);
+  color: var(--text-muted);
+  line-height: 1;
+  padding-bottom: 0.35em; /* baja el .ms respecto a la línea base del tiempo principal */
+}
+
+/* Pulso/brillo sutil mientras el cronómetro corre */
+@keyframes pulse-glow {
+  0%, 100% { text-shadow: 0 0 6px rgba(108, 99, 255, 0.0); }
+  50%       { text-shadow: 0 0 28px rgba(108, 99, 255, 0.65), 0 0 60px rgba(108, 99, 255, 0.25); }
+}
+
+#sw-display.running .time-main {
+  animation: pulse-glow 2.2s ease-in-out infinite;
+}
+
+/* ─── Timer Display ──────────────────────────────────────────────── */
+
+/* Misma estructura de wrapper que el stopwatch, pero con inputs */
+.timer-time-main,
+.timer-time-ms {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.t-sep {
+  font-family: var(--mono);
+  font-size: clamp(3.5rem, 14vw, 6rem);
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1;
+  user-select: none;
+}
+
+.t-dot {
+  font-family: var(--mono);
+  font-size: clamp(1.2rem, 4.5vw, 2rem);
+  color: var(--text-muted);
+  line-height: 1;
+  padding-bottom: 0.35em;
+  user-select: none;
+}
+
+/* Input principal (horas, minutos, segundos) */
+.t-input {
+  font-family: var(--mono);
+  font-size: clamp(3.5rem, 14vw, 6rem);
+  font-weight: 300;
+  color: var(--text);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  text-align: center;
+  width: 2.15ch;
+  outline: none;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.t-input:hover:not([readonly]) {
+  border-bottom-color: var(--primary);
+}
+
+.t-input:focus:not([readonly]) {
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+  cursor: text;
+}
+
+.t-input[readonly] {
+  cursor: default;
+}
+
+/* Input de centisegundos (más pequeño, alineado abajo-derecha) */
+.t-input-sm {
+  font-size: clamp(1.2rem, 4.5vw, 2rem);
+  width: 2.2ch;
+  color: var(--text-muted);
+  padding-bottom: 0.35em;
+}
+
+.t-input-sm:focus:not([readonly]) {
+  color: var(--accent);
+}
+
+/* Estado de alerta: < 15 segundos — todo el display se vuelve rojo con parpadeo */
+@keyframes blink-alert {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+#timer-display.alert .t-input,
+#timer-display.alert .t-sep,
+#timer-display.alert .t-dot {
+  color: var(--danger) !important;
+  border-bottom-color: transparent !important;
+  animation: blink-alert 1.1s ease-in-out infinite;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────── */
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.75rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, opacity 0.15s;
+}
+
+.btn:hover:not(:disabled)  { filter: brightness(1.12); }
+.btn:active:not(:disabled) { transform: scale(0.95); }
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--ghost);
+  color: var(--text);
+}
+.btn-secondary:hover:not(:disabled) { background: var(--ghost-h); }
+
+.btn-accent {
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+}
+.btn-accent:hover:not(:disabled) {
+  background: rgba(56, 189, 248, 0.22);
+  border-color: var(--accent);
+}
+
+.btn-ghost {
+  background: var(--ghost);
+  color: var(--text-muted);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--ghost-h);
+  color: var(--text);
+}
+
+/* ─── Laps ───────────────────────────────────────────────────────── */
+
+.laps-container {
+  background: var(--surface-blur);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ghost) transparent;
+}
+
+.laps-list {
+  list-style: none;
+  padding: 0.4rem 0;
+}
+
+.lap-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 1.3rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+
+.lap-item:last-child  { border-bottom: none; }
+.lap-item:hover       { background: rgba(255, 255, 255, 0.03); }
+
+.lap-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.lap-time {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.lap-ms {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* ─── Animaciones — resumen de @keyframes definidos arriba ───────── */
+/* pulse-glow   → brillo periódico en el display del stopwatch (running)  */
+/* blink-alert  → parpadeo del timer cuando quedan < 15 segundos          */

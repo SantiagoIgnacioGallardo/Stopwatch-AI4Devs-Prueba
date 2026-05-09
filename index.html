@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cronómetro | Temporizador</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Tab Navigation -->
+  <nav class="tabs" role="navigation">
+    <button class="tab-btn active" data-tab="stopwatch">Cronómetro</button>
+    <button class="tab-btn" data-tab="timer">Temporizador</button>
+  </nav>
+
+  <main class="container">
+
+    <!-- Stopwatch Container -->
+    <section id="stopwatch" class="tab-content active">
+      <h2 class="mode-title">Cronómetro</h2>
+
+      <!-- Time Display: HH:MM:SS grande, .ms abajo a la derecha -->
+      <div class="display" id="sw-display">
+        <div class="time-wrapper">
+          <span class="time-main" id="sw-time-main">00:00:00</span>
+          <span class="time-ms" id="sw-time-ms">.00</span>
+        </div>
+      </div>
+
+      <!-- Control Buttons -->
+      <div class="controls">
+        <button class="btn btn-primary" id="sw-start">Inicio</button>
+        <button class="btn btn-secondary hidden" id="sw-pause">Pausa</button>
+        <button class="btn btn-accent hidden" id="sw-lap">Lap</button>
+        <button class="btn btn-ghost" id="sw-reset" disabled>Reiniciar</button>
+      </div>
+
+      <!-- Laps History: solo se muestra si hay vueltas registradas -->
+      <div class="laps-container hidden" id="laps-container">
+        <ul class="laps-list" id="laps-list"></ul>
+      </div>
+    </section>
+
+    <!-- Timer Container -->
+    <section id="timer" class="tab-content">
+      <h2 class="mode-title">Temporizador</h2>
+
+      <!-- Editable Time Display: cada segmento es un input clickeable -->
+      <div class="display" id="timer-display">
+        <div class="time-wrapper">
+          <div class="timer-time-main">
+            <input class="t-input" type="text" inputmode="numeric" id="t-hours"   value="00" maxlength="2" placeholder="00">
+            <span class="t-sep">:</span>
+            <input class="t-input" type="text" inputmode="numeric" id="t-minutes" value="00" maxlength="2" placeholder="00">
+            <span class="t-sep">:</span>
+            <input class="t-input" type="text" inputmode="numeric" id="t-seconds" value="00" maxlength="2" placeholder="00">
+          </div>
+          <div class="timer-time-ms">
+            <span class="t-dot">.</span>
+            <input class="t-input t-input-sm" type="text" inputmode="numeric" id="t-ms" value="00" maxlength="2" placeholder="00">
+          </div>
+        </div>
+      </div>
+
+      <!-- Control Buttons -->
+      <div class="controls">
+        <button class="btn btn-primary" id="t-start">Iniciar</button>
+        <button class="btn btn-secondary hidden" id="t-pause">Pausa</button>
+        <button class="btn btn-ghost" id="t-reset" disabled>Reiniciar</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
